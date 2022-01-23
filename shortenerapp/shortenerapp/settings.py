@@ -122,3 +122,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+ORIGIN_URL="https://example.com" # url prefix for shorten form
+APPEND_SLASH = False # exercise requirement - no slash after "/create" url
+
+#localhost settings
+try:
+    from .local_settings import *
+except ImportError:
+    pass

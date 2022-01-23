@@ -1,7 +1,7 @@
 from django.db import models
 from .utils import make_hash
 # Create your models here.
-
+from django.conf import settings
 
 
 class ShortLink(models.Model):
@@ -23,3 +23,12 @@ class ShortLink(models.Model):
     def increment_clicks(self):
         self.clicks+=1
         self.save()
+
+    def get_short_url(self):
+        """
+        returns generated short url
+        domain name defined in settings  - ORIGIN_URL param
+        """
+
+        url_preffix = settings.ORIGIN_URL
+        return "{}/s/{}".format(url_preffix, self.hash)
