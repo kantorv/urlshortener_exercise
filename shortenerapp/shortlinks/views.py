@@ -3,6 +3,7 @@ from django.http import HttpResponse
 import json
 from .models import ShortLink
 from django.views.decorators.csrf import csrf_exempt
+from .utils import validate_url
 # Create your views here.
 
 
@@ -24,11 +25,19 @@ def create(request):
         req_body = request.body.decode()  # comes in bytes format, so decoding into string
         data = json.loads(req_body)
         url = data.get('url', None)
+
     except: # some exception with decoding json data
         return HttpResponse("Invalid data", status=400)
 
     if url is None:
         return HttpResponse("Invalid URL", status=400)
+
+    try:
+        is_valid = validate_url(url)
+        if not is_valid:
+            return HttpResponse("Mailformed URL", status=400)
+    except:
+        return HttpResponse("unknown error", status=500)
 
     link = ShortLink(origin=url)
     link.save()

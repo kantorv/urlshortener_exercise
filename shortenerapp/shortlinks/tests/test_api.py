@@ -21,7 +21,7 @@ class TestApi(TestCase):
         self.assertEqual(response.status_code, 201)
 
     def test_incorrect_url(self):
-        sample_url = "some long string"
+        sample_url = "some long non valid string"
         data = {
             "url": sample_url
         }
@@ -29,7 +29,8 @@ class TestApi(TestCase):
 
         response = self.client.post('/create', payload, content_type="application/json")
         #print(response.content, response.status_code)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content.decode(), "Mailformed URL")
 
 
     def test_redirect_chain(self):

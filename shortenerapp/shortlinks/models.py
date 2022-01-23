@@ -4,6 +4,8 @@ from .utils import make_hash
 from django.conf import settings
 
 
+
+
 class ShortLink(models.Model):
     origin = models.URLField(max_length=1000) #origin url, should not be unique
     hash = models.CharField(null=True,blank=True,unique=True, max_length=7)

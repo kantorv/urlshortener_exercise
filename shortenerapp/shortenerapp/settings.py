@@ -123,8 +123,16 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+
+
+#appliaction settings
+
+
 ORIGIN_URL="https://example.com" # url prefix for shorten form
 APPEND_SLASH = False # exercise requirement - no slash after "/create" url
+ALLOWED_SCHEMES = ["http","https","ftp"] #url valid schemes
+
 
 #localhost settings
 try:
