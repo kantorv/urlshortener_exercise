@@ -59,4 +59,4 @@ def redirect_view(request, hash):
         return HttpResponse("internal error", status=403)
     except:  #unhandled exeption, for dev team investigation
         #TODO: send exception to sentry/anothe issue tracker
-        return HttpResponse("inknown error", status=500)
+        return HttpResponse("unknown error", status=500)
