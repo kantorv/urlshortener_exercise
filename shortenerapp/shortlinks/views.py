@@ -32,6 +32,9 @@ def create(request):
     if url is None:
         return HttpResponse("Invalid URL", status=400)
 
+    #TODO: check why internal validator for url field not works as expected
+    #TODO: move this validation to model field validators
+
     try:
         is_valid = validate_url(url)
         if not is_valid:
