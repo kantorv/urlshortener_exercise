@@ -17,7 +17,7 @@ def create(request):
     -d '{"url": "https://ravkavonline.co.il"}'
     """
 
-    if request.method is not "POST":
+    if request.method != "POST":
         return HttpResponse("Method not allowed", status=405)
 
     try:
@@ -37,3 +37,26 @@ def create(request):
     return HttpResponse(shorten_url, status=201)
 
 
+
+
+def redirect_view(request, hash):
+    """
+    example call
+    curl  "http://localhost:8034/s/asdasds"
+    """
+
+
+    if request.method != "GET":
+        return HttpResponse("Method not allowed", status=405)
+
+    try:
+        link = ShortLink.objects.get(hash=hash)
+        link.increment_clicks() #incrementing clicks
+        return redirect(link.origin)
+    except ShortLink.DoesNotExist:
+        return HttpResponse("link not found", status=404)
+    except ShortLink.MultipleObjectsReturned: #should not happen, since hash defined as unique
+        return HttpResponse("internal error", status=403)
+    except:  #unhandled exeption, for dev team investigation
+        #TODO: send exception to sentry/anothe issue tracker
+        return HttpResponse("inknown error", status=500)
