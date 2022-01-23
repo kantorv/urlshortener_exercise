@@ -57,4 +57,29 @@ class TestApi(TestCase):
         self.assertEqual(response.content.decode(),'link not found')
 
 
+    def test_clicks_increment(self):
+        sample_url = "https://google.com"
+        data = {
+            "url": sample_url
+        }
+        payload = json.dumps(data)
+
+        response = self.client.post('/create', payload, content_type="application/json")
+        short_link = response.content.decode()
+
+        hash = short_link.split("/")[-1]
+        self.assertEqual(len(hash), 7)
+
+        obj = ShortLink.objects.get(hash=hash)
+        self.assertEqual(obj.origin, sample_url)
+        self.assertEqual(obj.clicks, 0)
+
+        response2 = self.client.get('/s/{}'.format(hash), follow=True)
+        obj = ShortLink.objects.get(hash=hash) #reloading object from db
+        self.assertEqual(obj.clicks, 1)
+
+        response3 = self.client.get('/s/{}'.format(hash), follow=True)
+        obj = ShortLink.objects.get(hash=hash) #reloading object from db
+        self.assertEqual(obj.clicks, 2)
+
 
