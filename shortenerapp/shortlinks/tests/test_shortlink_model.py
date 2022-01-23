@@ -22,6 +22,10 @@ class TestModelCreation(TestCase):
         self.assertNotEqual(link.hash, link2.hash)
 
 
+
+
+
+
     def test_counter_increment(self):
         link = ShortLink()
         link.origin = "https://google.com"
@@ -33,3 +37,11 @@ class TestModelCreation(TestCase):
         self.assertEqual(link.clicks, 1)
 
 
+    def test_same_origin(self):
+        link1 = ShortLink(origin = "https://google.com")
+        link1.save()
+
+        link2 = ShortLink(origin = "https://google.com")
+        link2.save()
+
+        self.assertNotEqual(link1.hash, link2.hash)
