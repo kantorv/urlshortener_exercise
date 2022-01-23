@@ -15,8 +15,12 @@ class ShortLink(models.Model):
     def save(self, *args, **kwargs):
         if not self.pk: # only new created links
             hash = make_hash()
+
+            # iterating while finding a unique hash
+            # infinite loop may (should) be replaced with math one-to-one function which maps a primary key to 7-lenght string
             while ShortLink.objects.filter(hash=hash).exists():
                 hash = make_hash()
+
             self.hash = hash
         super(ShortLink, self).save()
 
